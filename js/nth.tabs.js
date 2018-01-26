@@ -1,6 +1,7 @@
 /**
  * nth-tabs
  * author:nethuige
+ * editor : zhouwenyu
  * version:1.0
 */
 (function ($) {
@@ -13,7 +14,7 @@
 			rollWidth:nthTabs.width()-120, //可滚动的区域宽度，120即3个操作按钮的宽度
 		};
 		var settings = $.extend({},defaults,options);
-		var template = '<div class="page-tabs"><a href="#" class="roll-nav roll-nav-left"><span class="fa fa-backward"></span></a><div class="content-tabs"><div class="content-tabs-container"><ul class="nav nav-tabs" role="tablist"></ul></div></div><a href="#" class="roll-nav roll-nav-right"><span class="fa fa-forward"></span></a><div class="dropdown roll-nav right-nav-list"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-chevron-down"></span></a><ul class="dropdown-menu"><li><a href="#" class="tab-location">定位当前选项卡</a></li><li><a href="#" class="tab-close-current">关闭当前选项卡</a></li><li role="separator" class="divider"></li><li><a href="#" class="tab-close-other">关闭其他选项卡</a></li><li><a href="#" class="tab-close-all">关闭全部选项卡</a></li><li role="separator" class="divider"></li><li class="scrollbar-outer tab-list-scrollbar"><div class="tab-list-container"><ul class="tab-list"></ul></div></li></ul></div></div><div class="tab-content" style="padding:20px"></div>';
+		var template = '<div class="page-tabs"><a href="#" class="roll-nav roll-nav-left"><span class="fa fa-backward"></span></a><div class="content-tabs"><div class="content-tabs-container"><ul class="nav nav-tabs" role="tablist"></ul></div></div><a href="#" class="roll-nav roll-nav-right"><span class="fa fa-forward"></span></a><div class="dropdown roll-nav right-nav-list"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-chevron-down"></span></a><ul class="dropdown-menu"><li class="dropdown-item"><a href="#" class="tab-location">定位当前选项卡</a></li><li class="dropdown-item"><a href="#" class="tab-close-current">关闭当前选项卡</a></li><li role="separator" class="dropdown-divider divider"></li><li class="dropdown-item"><a href="#" class="tab-close-other">关闭其他选项卡</a></li><li class="dropdown-item"><a href="#" class="tab-close-all">关闭全部选项卡</a></li><li role="separator" class="dropdown-divider divider"></li><li class="scrollbar-outer tab-list-scrollbar"><div class="tab-list-container"><ul class="tab-list"></ul></div></li></ul></div></div><div class="tab-content" style="padding:20px"></div>';
 		//各种api
 		var methods = {
 			//初始化
