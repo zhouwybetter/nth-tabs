@@ -13,7 +13,7 @@
 			rollWidth:nthTabs.width()-120, //可滚动的区域宽度，120即3个操作按钮的宽度
 		};
 		var settings = $.extend({},defaults,options);
-		var template = '<div class="page-tabs"><a href="#" class="roll-nav roll-nav-left"><span class="fa fa-backward"></span></a><div class="content-tabs"><div class="content-tabs-container"><ul class="nav nav-tabs"></ul></div></div><a href="#" class="roll-nav roll-nav-right"><span class="fa fa-forward"></span></a><div class="dropdown roll-nav right-nav-list"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-chevron-down"></span></a><ul class="dropdown-menu"><li><a href="#" class="tab-location">定位当前选项卡</a></li><li><a href="#" class="tab-close-current">关闭当前选项卡</a></li><li role="separator" class="divider"></li><li><a href="#" class="tab-close-other">关闭其他选项卡</a></li><li><a href="#" class="tab-close-all">关闭全部选项卡</a></li><li role="separator" class="divider"></li><li class="scrollbar-outer tab-list-scrollbar"><div class="tab-list-container"><ul class="tab-list"></ul></div></li></ul></div></div><div class="tab-content" style="padding:20px"></div>';
+		var template = '<div class="page-tabs"><a href="#" class="roll-nav roll-nav-left"><span class="fa fa-backward"></span></a><div class="content-tabs"><div class="content-tabs-container"><ul class="nav nav-tabs" role="tablist"></ul></div></div><a href="#" class="roll-nav roll-nav-right"><span class="fa fa-forward"></span></a><div class="dropdown roll-nav right-nav-list"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-chevron-down"></span></a><ul class="dropdown-menu"><li><a href="#" class="tab-location">定位当前选项卡</a></li><li><a href="#" class="tab-close-current">关闭当前选项卡</a></li><li role="separator" class="divider"></li><li><a href="#" class="tab-close-other">关闭其他选项卡</a></li><li><a href="#" class="tab-close-all">关闭全部选项卡</a></li><li role="separator" class="divider"></li><li class="scrollbar-outer tab-list-scrollbar"><div class="tab-list-container"><ul class="tab-list"></ul></div></li></ul></div></div><div class="tab-content" style="padding:20px"></div>';
 		//各种api
 		var methods = {
 			//初始化
@@ -57,8 +57,8 @@
 				var active = options.active==undefined ? settings.active : options.active;
 				var allowClose = options.allowClose==undefined ? settings.allowClose : options.allowClose;
 				active = active ? 'active':'';
-				tab.push('<li role="presentation" class="'+active+'">');
-				tab.push('<a href="#'+options.id+'" data-toggle="tab">');
+				tab.push('<li class="nav-item ">');
+				tab.push('<a class="nav-link '+active+'" href="#'+options.id+'" data-toggle="tab">');
 				tab.push('<span>'+options.title+'</span>');
 				allowClose ? tab.push('<i class="fa fa-close tab-close"></i>'):'';
 				tab.push('</a>');
@@ -113,12 +113,12 @@
 				tabId = tabId.indexOf('#')>-1 ? tabId : '#'+tabId;
 				var navTabA = nthTabs.find("[href='"+tabId+"']");
 				//如果关闭的是激活状态的选项卡
-				if(navTabA.parent().attr('class')=='active'){
+				if(navTabA.attr('class')=='active'){
 					//激活选项卡，如果后面存在激活后面，否则激活前面
-					var activeNavTab = navTabA.parent().next();
+					var activeNavTab = navTabA.next();
 					var activeTabContent = $(tabId).next();
 					if(activeNavTab.length<1){
-						activeNavTab = navTabA.parent().prev();
+						activeNavTab = navTabA.prev();
 						activeTabContent = $(tabId).prev();
 					}
 					activeNavTab.addClass('active');
@@ -146,7 +146,7 @@
 				tabId = tabId ==undefined ? methods.getActiveId() : tabId;
 				tabId = tabId.indexOf('#')>-1 ? tabId : '#'+tabId;
 				nthTabs.find('.active').removeClass('active');
-				nthTabs.find("[href='"+tabId+"']").parent().addClass('active');
+				nthTabs.find("[href='"+tabId+"']").addClass('active');
 				nthTabs.find(tabId).addClass('active');
 				return methods;
 			},

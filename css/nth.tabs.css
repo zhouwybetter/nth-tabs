@@ -138,7 +138,10 @@
 	color: #76838f;
 	border-radius: 0;
 }
-
+.nav-tabs .nav-link{
+	padding:0 1rem;
+	
+}
 .nav-tabs>li>a {
 	border-radius: 0;
 	margin-right: 0px;
