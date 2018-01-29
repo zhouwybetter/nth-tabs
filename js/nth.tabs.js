@@ -10,11 +10,11 @@
 		var nthTabs = this;
 		var defaults = {
 			allowClose:true, //添加选项卡时是否允许关闭,默认值：是
-			active:false, //添加选项卡时是否为活动状态,默认值：否
+			active:true, //添加选项卡时是否为活动状态,默认值：否
 			rollWidth:nthTabs.width()-120, //可滚动的区域宽度，120即3个操作按钮的宽度
 		};
 		var settings = $.extend({},defaults,options);
-		var template = '<div class="page-tabs"><a href="#" class="roll-nav roll-nav-left"><span class="fa fa-backward"></span></a><div class="content-tabs"><div class="content-tabs-container"><ul class="nav nav-tabs" role="tablist"></ul></div></div><a href="#" class="roll-nav roll-nav-right"><span class="fa fa-forward"></span></a><div class="dropdown roll-nav right-nav-list"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a><ul class="dropdown-menu"><li class="dropdown-item"><a href="#" class="tab-location">定位当前选项卡</a></li><li class="dropdown-item"><a href="#" class="tab-close-current">关闭当前选项卡</a></li><li role="separator" class="dropdown-divider divider"></li><li class="dropdown-item"><a href="#" class="tab-close-other">关闭其他选项卡</a></li><li class="dropdown-item"><a href="#" class="tab-close-all">关闭全部选项卡</a></li><li role="separator" class="dropdown-divider divider"></li><li class="scrollbar-outer tab-list-scrollbar"><div class="tab-list-container"><ul class="tab-list"></ul></div></li></ul></div></div><div class="tab-content" style="padding:20px"></div>';
+		var template = '<div class="page-tabs"><a href="#" class="roll-nav roll-nav-left"><span class="fa fa-backward"></span></a><div class="content-tabs"><div class="content-tabs-container"><ul class="nav nav-tabs" role="tablist"></ul></div></div><a href="#" class="roll-nav roll-nav-right"><span class="fa fa-forward"></span></a><div class="dropdown roll-nav right-nav-list"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a><ul class="dropdown-menu dropdown-menu-right"><li class="dropdown-item"><a href="#" class="tab-location">定位当前选项卡</a></li><li class="dropdown-item"><a href="#" class="tab-close-current">关闭当前选项卡</a></li><li role="separator" class="dropdown-divider divider"></li><li class="dropdown-item"><a href="#" class="tab-close-other">关闭其他选项卡</a></li><li class="dropdown-item"><a href="#" class="tab-close-all">关闭全部选项卡</a></li><li role="separator" class="dropdown-divider divider"></li><li class="scrollbar-outer tab-list-scrollbar"><div class="tab-list-container"><ul class="tab-list"></ul></div></li></ul></div></div><div class="tab-content"></div>';
 		//各种api
 		var methods = {
 			//初始化
@@ -41,7 +41,7 @@
 			},
 			//获取当前活动状态选项卡ID
 			getActiveId:function(){
-				return nthTabs.find('li>a[class="nav-link active"]').attr("href").replace('#','');
+				return nthTabs.find('li>a.active').attr("href").replace('#','');
 			},
 			//获取所有选项卡
 			getTabList:function(){
@@ -53,26 +53,27 @@
 			},
 			//添加一个选项卡
 			addTab:function (options) {
+
 				//nav-tab
 				var tab = [];
 				nthTabs.find('.active').removeClass('active');
 				var active = options.active==undefined ? settings.active : options.active;
 				var allowClose = options.allowClose==undefined ? settings.allowClose : options.allowClose;
 				active = active ? 'active':'';
-				tab.push('<li class="nav-item">');
-				tab.push('<a class="nav-link '+active+'" href="#'+options.id+'" data-toggle="tab">');
-				tab.push('<span>'+options.title+'</span>');
-				allowClose ? tab.push('<i class="fa fa-close tab-close"></i>'):'';
-				tab.push('</a>');
-				tab.push('</li>');
-				nthTabs.find(".nav-tabs").append(tab.join(''));
-				//tab-content
-				var tabContent = [];
-				tabContent.push('<div class="tab-pane '+active+'" id="'+options.id+'">');
-				tabContent.push(options.content);
-				tabContent.push('</div>');
-				nthTabs.find(".tab-content").append(tabContent.join(''));
-
+				if(options.id){}
+					tab.push('<li class="nav-item">');
+					tab.push('<a class="nav-link '+active+'" href="#'+options.id+'" data-toggle="tab">');
+					tab.push('<span>'+options.title+'</span>');
+					allowClose ? tab.push('<i class="fa fa-close tab-close"></i>'):'';
+					tab.push('</a>');
+					tab.push('</li>');
+					nthTabs.find(".nav-tabs").append(tab.join(''));
+					//tab-content
+					var tabContent = [];
+					tabContent.push('<div class="tab-pane '+active+'" id="'+options.id+'">');
+					tabContent.push(options.content);
+					tabContent.push('</div>');
+					nthTabs.find(".tab-content").append(tabContent.join(''));
 				return methods;
 			},
 			//定位选项卡
@@ -116,15 +117,15 @@
 				tabId = tabId.indexOf('#')>-1 ? tabId : '#'+tabId;
 				var navTabA = nthTabs.find("[href='"+tabId+"']");
 				//如果关闭的是激活状态的选项卡
-				if(navTabA.attr('class')=='active'){
+				if(navTabA.hasClass('active')){
 					//激活选项卡，如果后面存在激活后面，否则激活前面
-					var activeNavTab = navTabA.next();
+					var activeNavTab = navTabA.parent().next();
 					var activeTabContent = $(tabId).next();
 					if(activeNavTab.length<1){
-						activeNavTab = navTabA.prev();
+						activeNavTab = navTabA.parent().prev();
 						activeTabContent = $(tabId).prev();
 					}
-					activeNavTab.addClass('active');
+					activeNavTab.find('a').addClass('active');
 					activeTabContent.addClass('active');
 				}
 				//移除旧选项卡
@@ -134,14 +135,14 @@
 			},
 			//删除其他选项卡
 			delOtherTab:function(){
-				nthTabs.find(".nav-tabs li a").not('[class="nav-link active"]').parent().remove();
-				nthTabs.find(".tab-content div").not('[class="tab-pane active"]').remove();
+				nthTabs.find(".nav-tabs li a.active").parent().siblings().not(':first').remove();
+				nthTabs.find(".tab-content>div.active").siblings().not(':first').remove();
 				return methods;
 			},
 			//删除全部选项卡
 			delAllTab:function(){
-				nthTabs.find(".nav-tabs li").remove();
-				nthTabs.find(".tab-content div").remove();
+				nthTabs.find(".nav-tabs li:not(:first),.tab-content div:not(:first)").remove();
+				nthTabs.find(".nav-tabs li:first a,.tab-content div:first").addClass('active');
 				return methods;
 			},
 			//切换活动选项卡
@@ -174,7 +175,10 @@
 			//关闭当前选项卡操作
 			onTabCloseOpt:function(){
 				nthTabs.on("click",'.tab-close-current',function () {
-					methods.delTab();
+					console.info(nthTabs.find('.nav-tabs li a.active').parent('li').index());
+					if(nthTabs.find('.nav-tabs li a.active').parent('li').index()>0){
+						methods.delTab();
+					}
 				});
 				return event;
 			},
@@ -218,6 +222,7 @@
 			//选项卡清单
 			onTabList:function(){
 				nthTabs.on("click",'.right-nav-list',function () {
+					$(this).addClass({'right':'2px'});
 					var tablist = methods.getTabList();
 					var html = [];
 					$.each(tablist,function (key,val) {
